@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -25,13 +26,35 @@ class _WebViewAppState extends State<WebViewApp> {
     return Scaffold(
       body: SafeArea(
         child: WebView(
-        initialUrl: 'http://goga.co.ke/newgoga',
+        initialUrl: 'https://goga.co.ke/',
         javascriptMode: JavascriptMode.unrestricted,
         onWebViewCreated: (WebViewController webViewController){
           _controller.complete(webViewController);
         },
     ),
+    
       ),
+      bottomNavigationBar: CurvedNavigationBar(
+        color: Colors.deepOrange,
+        backgroundColor: Colors.white,
+        buttonBackgroundColor: Colors.deepOrange,
+        height: 50.0,
+        items: <Widget>[
+          Icon(Icons.home,size: 20.0,color: Colors.white,),
+          Icon(Icons.category,size: 20.0,color: Colors.white),
+          Icon(Icons.account_circle,size: 20.0,color: Colors.white),
+          Icon(Icons.help,size: 20.0,color: Colors.white),
+        ],
+        animationDuration: Duration(
+          milliseconds: 200
+        ),
+        index: 0,
+        animationCurve: Curves.bounceInOut,
+        onTap: (index){
+        
+          debugPrint("Current index is $index ");
+        },
+         ),
     );
   }
 }
