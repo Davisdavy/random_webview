@@ -1,8 +1,10 @@
-import 'dart:async';
 
+import 'package:goga/Home.dart';
+import './Help.dart';
+import './Account.dart';
+import './Categories.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 void main() => runApp(MaterialApp(
   theme: ThemeData(
@@ -18,43 +20,45 @@ class WebViewApp extends StatefulWidget {
 }
 
 class _WebViewAppState extends State<WebViewApp> {
+  int _selectedPage = 0;
+  final _pageOptions = [
+    Home(),
+    Categories(),
+    Account(),
+    Help()
+  ];
 
-  final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: WebView(
-        initialUrl: 'https://goga.co.ke/',
-        javascriptMode: JavascriptMode.unrestricted,
-        onWebViewCreated: (WebViewController webViewController){
-          _controller.complete(webViewController);
-        },
-    ),
-    
+      body: _pageOptions[_selectedPage],
+      bottomNavigationBar: SafeArea(
+        child: CurvedNavigationBar(
+          index: _selectedPage,
+          onTap: (int index) {
+            setState(() {
+              _selectedPage = index;
+            });
+          },
+          color: Colors.deepOrange,
+          backgroundColor: Colors.white,
+          buttonBackgroundColor: Colors.deepOrange,
+          height: 50.0,
+          items: <Widget>[
+            Icon(Icons.home,size: 25.0,color: Colors.white),
+            Icon(Icons.list,size: 25.0,color: Colors.white),
+            Icon(Icons.account_circle,size: 25.0,color: Colors.white),
+            Icon(Icons.help,size: 25.0,color: Colors.white),
+          ],
+          animationDuration: Duration(
+            milliseconds: 200
+          ),
+          animationCurve: Curves.bounceInOut,
+           ),
       ),
-      bottomNavigationBar: CurvedNavigationBar(
-        color: Colors.deepOrange,
-        backgroundColor: Colors.white,
-        buttonBackgroundColor: Colors.deepOrange,
-        height: 50.0,
-        items: <Widget>[
-          Icon(Icons.home,size: 20.0,color: Colors.white,),
-          Icon(Icons.category,size: 20.0,color: Colors.white),
-          Icon(Icons.account_circle,size: 20.0,color: Colors.white),
-          Icon(Icons.help,size: 20.0,color: Colors.white),
-        ],
-        animationDuration: Duration(
-          milliseconds: 200
-        ),
-        index: 0,
-        animationCurve: Curves.bounceInOut,
-        onTap: (index){
-        
-          debugPrint("Current index is $index ");
-        },
-         ),
     );
+
   }
+
 }
